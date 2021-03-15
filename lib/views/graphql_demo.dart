@@ -9,24 +9,34 @@ class GrapHqlDemo extends StatefulWidget {
 
 class _GrapHqlDemoState extends State<GrapHqlDemo> {
   GrapHqlBloc _bloc;
-  String query = """query{
- countries{
-  name
-  capital
-  currency
-} 
-}""";
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    String query = r"""query Getcontinet($code : ID!){
+  continent(code : $code){
+    name
+    countries{
+      name
+      capital
+      currency
+    }
+  }
+}""";
     _bloc = GrapHqlBloc()..sinkData(query);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.grey,
+        child: Icon(Icons.more_horiz_rounded),
+        onPressed: () {
+
+        },
+      ),
       body: Container(
         height: double.infinity,
         width: double.infinity,
@@ -47,8 +57,15 @@ class _GrapHqlDemoState extends State<GrapHqlDemo> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Flexible(child: Text("${snapshot.data[index].name}",overflow: TextOverflow.ellipsis,)),
-                                Text("${snapshot.data[index].capital}",overflow: TextOverflow.ellipsis,),
+                                Flexible(
+                                    child: Text(
+                                  "${snapshot.data[index].name}",
+                                  overflow: TextOverflow.ellipsis,
+                                )),
+                                Text(
+                                  "${snapshot.data[index].capital}",
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                                 Text(
                                   "${snapshot.data[index].currency}",
                                   textAlign: TextAlign.center,
